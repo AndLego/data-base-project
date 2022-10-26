@@ -1,5 +1,6 @@
 import express from "express";
 import { success, error } from "../../network/response.js";
+import { addMessage } from "./controller.js";
 
 const router = express.Router();
 
@@ -7,11 +8,16 @@ router.get("/", (req, res) => {
   success(req, res, "conectado", 200);
 });
 
-router.post("/", (req, res) => {
-  if (req.query.error == "ok") {
-    error(req, res, "error simulado", 500, "es solo una simulacion de errores");
-  } else {
-    success(req, res, "mensaje creado correctamente");
+router.post("/", async (req, res) => {
+  try {
+    const newMessage = await addMessage(req.body.user, req.body.message);
+    if (newMessage) {
+      success(req, res, newMessage, 200);
+    } else {
+      throw Error;
+    }
+  } catch (err) {
+    error(req, res, "error en el server", 500, err);
   }
 });
 
