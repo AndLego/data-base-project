@@ -2,6 +2,8 @@
 import express from "express";
 import { routes } from "./network/routes.js";
 
+import "./db.js";
+
 const app = express();
 
 //Middlewares

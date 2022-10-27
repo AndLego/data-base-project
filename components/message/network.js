@@ -1,23 +1,25 @@
-import express from "express";
+import express, { response } from "express";
 import { success, error } from "../../network/response.js";
-import { addMessage } from "./controller.js";
+import { sendMessage, showMessages } from "./controller.js";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  success(req, res, "conectado", 200);
+router.get("/", async (req, res) => {
+  try {
+    const messageList = await showMessages();
+    success(req, res, messageList, 200);
+  } catch (err) {
+    error(req, res, "unexpected error", 500, err);
+  }
 });
 
 router.post("/", async (req, res) => {
+  const { user, message } = req.body;
   try {
-    const newMessage = await addMessage(req.body.user, req.body.message);
-    if (newMessage) {
-      success(req, res, newMessage, 200);
-    } else {
-      throw Error;
-    }
+    const newMessage = await sendMessage(user, message);
+    success(req, res, newMessage, 200);
   } catch (err) {
-    error(req, res, "error en el server", 500, err);
+    error(req, res, "invalid data", 400, err);
   }
 });
 

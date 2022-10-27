@@ -1,4 +1,6 @@
-export const addMessage = async (user, message) => {
+import { addMessage, getMessages } from "./store.js";
+
+export const sendMessage = async (user, message) => {
   try {
     if (!user || !message) {
       console.error("[messageController], no hay usuario o mensaje");
@@ -7,12 +9,21 @@ export const addMessage = async (user, message) => {
     const fullMessage = {
       user: user,
       message: message,
-      date: new Date().toLocaleString(),
+      date: new Date(),
+      // con mongodb no sirve, depronto al hacer la peticion
+      //date: new Date().toLocaleString(),
     };
+    addMessage(fullMessage);
     return fullMessage;
   } catch (err) {
-    console.error("error" + err);
+    console.error("error sending" + err);
   }
+};
 
-  return false;
+export const showMessages = async () => {
+  return getMessages();
+
+  //   return new Promise((resolve, reject) => {
+  //     resolve(list())
+  // })
 };
