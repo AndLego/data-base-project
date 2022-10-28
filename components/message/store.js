@@ -1,14 +1,20 @@
-import Model from "./model.js"
+import Model from "./model.js";
 
 export const addMessage = (message) => {
   const myMessage = new Model(message);
   myMessage.save();
 };
 
-export const getMessages = async () => {
-    //ask for all the documents that's the empty ()
-    return await Model.find()
+export const getMessages = async (filter) => {
+  return await Model.find(filter);
 };
 
-//update
+export const updateText = async (id, message) => {
+  const foundMessage = await Model.findById(id);
+
+  foundMessage.message = message;
+  const newMessage = await foundMessage.save();
+  return newMessage;
+};
+
 //delete

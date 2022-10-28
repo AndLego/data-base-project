@@ -1,4 +1,4 @@
-import { addMessage, getMessages } from "./store.js";
+import { addMessage, getMessages, updateText } from "./store.js";
 
 export const sendMessage = async (user, message) => {
   try {
@@ -20,10 +20,23 @@ export const sendMessage = async (user, message) => {
   }
 };
 
-export const showMessages = async () => {
-  return getMessages();
+export const showMessages = async (filter) => {
+  return getMessages(filter);
 
   //   return new Promise((resolve, reject) => {
   //     resolve(list())
   // })
+};
+
+export const updateMessage = async (id, message) => {
+  try {
+    if (!id || !message) {
+      console.error("invalid data");
+      throw Error("Invalid data");
+    }
+    const result = await updateText(id, message);
+    return result;
+  } catch (err) {
+    console.error("error updating" + err);
+  }
 };
