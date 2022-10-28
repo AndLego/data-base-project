@@ -3,8 +3,11 @@ import express from "express";
 import { routes } from "./network/routes.js";
 
 import "./db.js";
+import { connect } from "./db.js";
 
 const app = express();
+
+connect();
 
 //Middlewares
 app.use(express.json());

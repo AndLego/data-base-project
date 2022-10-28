@@ -1,4 +1,4 @@
-import { addMessage, getMessages, updateText } from "./store.js";
+import { addMessage, getMessages, removeMessage, updateText } from "./store.js";
 
 export const sendMessage = async (user, message) => {
   try {
@@ -38,5 +38,17 @@ export const updateMessage = async (id, message) => {
     return result;
   } catch (err) {
     console.error("error updating" + err);
+  }
+};
+
+export const deleteMessage = async (id) => {
+  try {
+    if (!id) {
+      console.error("invalid id");
+      throw Error("Invalid id");
+    }
+    return await removeMessage(id);
+  } catch (err) {
+    console.error("error deleting" + err);
   }
 };

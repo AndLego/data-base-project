@@ -1,6 +1,11 @@
 import express from "express";
 import { success, error } from "../../network/response.js";
-import { sendMessage, showMessages, updateMessage } from "./controller.js";
+import {
+  deleteMessage,
+  sendMessage,
+  showMessages,
+  updateMessage,
+} from "./controller.js";
 
 const router = express.Router();
 
@@ -35,6 +40,19 @@ router.patch("/:id", async (req, res) => {
   try {
     const update = await updateMessage(req.params.id, req.body.message);
     success(req, res, update, 200);
+  } catch (err) {
+    error(req, res, "error interno", 500, err);
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  try {
+    const removeMsg = await deleteMessage(id);
+    console.log(removeMsg);
+    removeMsg.deletedCount !== 0
+      ? success(req, res, "message was deleted", 200)
+      : error(req, res, "the message doesnt exist", 500);
   } catch (err) {
     error(req, res, "error interno", 500, err);
   }

@@ -17,4 +17,8 @@ export const updateText = async (id, message) => {
   return newMessage;
 };
 
-//delete
+export const removeMessage = async (id) => {
+  return await Model.deleteOne({
+    _id: id,
+  });
+};
