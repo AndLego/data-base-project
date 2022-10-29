@@ -21,7 +21,7 @@ export const sendMessage = async (user, message) => {
 };
 
 export const showMessages = async (filter) => {
-  return getMessages(filter);
+  return await getMessages(filter);
 
   //   return new Promise((resolve, reject) => {
   //     resolve(list())
